@@ -1,0 +1,20 @@
+.heading {
+    font-size: 2rem;
+    font-weight: 700;
+    width: fit-content;
+    padding-left: 5px;
+    padding-right: 10px;
+    position: relative;
+
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: -5px;
+        right: -5px;
+        top: 50%;
+        bottom: 0;
+        background-color: var(--light-blue-700);
+        z-index: -1;
+    }
+}

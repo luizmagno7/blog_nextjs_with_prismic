@@ -1,1 +1,15 @@
-// TODO
+.container {
+    width: 80%;
+    margin-top: 32px;
+    margin-inline: auto;
+    
+    .postList {
+        display: flex;
+        justify-content: space-between;
+
+        article {
+            width: 45%;
+            margin-top: 25px;
+        }
+    }
+}

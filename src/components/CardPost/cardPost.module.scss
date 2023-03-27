@@ -1,0 +1,14 @@
+.card {
+    & > * {
+        margin-bottom: 8px;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    time {
+        font-size: 0.9rem;
+        font-style: italic;
+    }
+}

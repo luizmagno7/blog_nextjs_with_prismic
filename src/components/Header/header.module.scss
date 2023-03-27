@@ -1,1 +1,47 @@
-// TODO
+.headerContent {
+    background-color: var(--gray-850);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(65, 63, 63, 29%);
+
+    .brand {
+        display: flex;
+        max-width: 250px;
+        height: 70px;
+        align-items: center;
+        margin: 0 5%;
+    
+        span {
+            margin-left: 38px;
+            font-size: 1.5rem;
+            position: relative;
+            font-weight: bold;
+    
+            &::before, &::after {
+                content: '';
+                display: inline-block;
+                width: 15px;
+                height: 15px;
+                position: absolute;
+            }
+    
+            &::before {
+                left: -6px;
+                bottom: 0;
+                border: 2px solid;
+                border-top: none;
+                border-right: none;
+                border-color: var(--light-pink-700);
+            }
+    
+            &::after {
+                right: -6px;
+                top: 0;
+                border: 2px solid;
+                border-bottom: none;
+                border-left: none;
+                border-color: var(--light-blue-700);
+            }
+        }
+    }
+}

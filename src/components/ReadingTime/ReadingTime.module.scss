@@ -1,0 +1,14 @@
+.time {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    
+    .time--icon {
+        margin-right: 4px;
+    }
+
+    small {
+        margin-left: 2px;
+        font-size: 0.8rem;
+    }
+}
