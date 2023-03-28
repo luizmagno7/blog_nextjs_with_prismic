@@ -16,6 +16,7 @@ interface Post {
     title: string;
     banner: {
       url: string;
+      alt: string | null;
     };
     author: string;
     content: {
@@ -63,6 +64,7 @@ const mockedGetByUIDReturn = {
     banner: {
       url:
         'https://images.prismic.io/criando-projeto-do-zero/95494d57-eee2-4adb-9883-befa9829abca_christopher-gower-m_HRfLhgABo-unsplash.jpg?auto=compress,format',
+      alt: ""
     },
     content: [
       {

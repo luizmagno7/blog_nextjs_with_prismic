@@ -5,6 +5,8 @@ import Image from 'next/image';
 
 import styles from './cardPost.module.scss'
 import { format } from "date-fns";
+import PostDate from "../PostDate";
+import PostAuthor from "../PostAuthor";
 
 interface Post {
     uid?: string;
@@ -20,7 +22,7 @@ interface Post {
 }
 
 export const CardPost: React.FC<Post> = ( post ) => {
-    const { uid: postSlug, first_publication_date: createdAt, data: { title, subtitle, author, banner: { url: bannerUrl }} } = post
+    const { uid: postSlug, first_publication_date: createdAt, data: { title, subtitle, author } } = post
 
     return (
         <>
@@ -28,7 +30,7 @@ export const CardPost: React.FC<Post> = ( post ) => {
                 <a className={styles.card}>
                     
                     <h2>{title}</h2>
-                    <time dateTime={format(new Date(createdAt), 'dd/MM/yyyy')}>{format(new Date(createdAt), 'dd/MM/yyyy') }</time>
+                    <PostDate date={createdAt} /> <PostAuthor author={author} />
                     <p>{subtitle}</p>
                 
                 </a>

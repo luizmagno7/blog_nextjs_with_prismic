@@ -1,6 +1,9 @@
 import { GetStaticProps } from 'next';
+import { useState } from 'react';
 
 import { getPrismicClient } from '../services/prismic';
+
+import 'whatwg-fetch';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
@@ -29,6 +32,23 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps) {
   const { next_page, results: posts } = postsPagination;
+  const [postList, setPostList] = useState(posts);
+  const [nextPageLink, setNextPageLink] = useState(next_page);
+
+  function handleMorePosts(next_page) {
+    fetch(next_page)
+      .then(response => response.json())
+      .then(data => {
+        const nextPosts = data.results;
+        const nextLink = data.next_page;
+
+        const postListModified = postList.concat(nextPosts);
+
+        setPostList(postListModified);
+        setNextPageLink(nextLink);
+      })
+      .catch(error => console.error(error));
+  }
 
   return (
     <>
@@ -38,7 +58,7 @@ export default function Home({ postsPagination }: HomeProps) {
 
           <div className={styles.postList}>
             {
-              posts.map((post: Post) => {
+              postList.map((post: Post) => {
                 return (
                   <article key={post.uid}>
                     <CardPost {...post} />
@@ -47,6 +67,8 @@ export default function Home({ postsPagination }: HomeProps) {
               })
             }
           </div>
+
+          {!!nextPageLink && <button className={styles.btnLoader} onClick={() => { handleMorePosts(nextPageLink) }}>Carregar mais posts</button>}
         </section>
       </main>
     </>
@@ -55,7 +77,9 @@ export default function Home({ postsPagination }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsResponse = await prismic.getByType("posts");
+  const postsResponse = await prismic.getByType("posts", {
+    pageSize: 1
+  });
 
   const { next_page, results } = postsResponse;
 

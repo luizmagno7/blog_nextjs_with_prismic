@@ -11,6 +11,7 @@ export default function Header() {
         <a>
           <div className={styles.brand}>
             <Logo />
+            <img alt="logo" />
 
             <span>Square.News</span>
           </div>

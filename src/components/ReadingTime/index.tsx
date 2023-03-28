@@ -17,7 +17,7 @@ const ReadingTime: React.FC<ReadingTimeProps> = ({ html }) => {
         <em className={styles.time}>
             <BiTime className={ styles['time--icon'] } />
 
-            { time } minutos <small>(tempo de leitura)</small>
+            { time } min <small>(tempo de leitura)</small>
         </em>
     )
 }

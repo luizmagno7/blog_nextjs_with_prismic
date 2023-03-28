@@ -1,6 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import React, { useEffect, useState } from "react"
+import { useRouter } from 'next/router';
+import React, { useEffect, useState, useMemo } from "react"
 import { asHTML, asText } from '@prismicio/helpers';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -36,17 +39,31 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   const { data: { title, banner, author, content }, first_publication_date } = post;
-  const [textReading, setTextReading] = useState("");
+  //const [textReading, setTextReading] = useState("");
 
-  useEffect(() => {
-    let postText = '';
-    content.forEach((group, index) => {
-      postText += group.heading;
-      postText += group.body.text;
-    })
-  
-    setTextReading(postText);
-  }, [])
+  const uniqueKey = uuidv4();
+
+  const textReading = useMemo(() => {
+    return content.reduce((acc, { heading, body }, index) => {
+      return acc + heading + body.text;
+    }, '');
+  }, [content]);
+
+  // memo(() => {
+  //   let postText = '';
+  //   content.forEach((group, index) => {
+  //     postText += group.heading;
+  //     postText += group.body.text;
+  //   })
+
+  //   setTextReading(postText);
+  // }, [])
+
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <main>
@@ -59,16 +76,18 @@ export default function Post({ post }: PostProps) {
         </PostDetails>
       </section>
 
-      <article>
-        {content.map((article) => {
-          const {heading, body: { text }} = article;
+      <article key={uniqueKey} className={styles.articleContent}>
+        {content.map((article, index) => {
+          const { heading, body: { text } } = article;
+
+          const contentId = uuidv4();
 
           return (
-            <>
-              {!!heading && <h2>{ heading }</h2>}
+            <React.Fragment key={`content-${index}-${contentId}`}>
+              {!!heading && <h2 key={`heading-${index}-${contentId}`}>{heading}</h2>}
 
-              <div dangerouslySetInnerHTML={{ __html: text}}></div>
-            </>
+              <div key={`content-${index}-${contentId}`} dangerouslySetInnerHTML={{ __html: text }}></div>
+            </React.Fragment>
           )
         })}
       </article>
@@ -86,7 +105,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: paths,
-    fallback: false
+    fallback: true
   }
 };
 
